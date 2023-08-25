@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+    <h1>Profile of {{ content.0.user_id }}</h1>
+    <hr>
+    <h2>Contents:</h2>
+    {% for i in content %}
+    <h2>{{ i.content_name }} - {{ i.content_date }}</h2>
+    <h3>{{ i.content_info }}</h3>
+    <form action="/add_like/{{ i.id }}" method="post">
+        {% csrf_token %}
+        <h4><button>likes</button> - {{ i.content_likes }}</h4>
+    </form>
+    <form action="/add_dislike/{{ i.id }}" method="post">
+        {% csrf_token %}
+        <h4><button>dislikes</button> - {{ i.content_dislikes }}</h4>
+    </form>
+    <hr>
+    {% endfor %}
+</body>
+</html>

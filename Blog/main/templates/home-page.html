@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home-page</title>
+</head>
+<body>
+    <h1>Django-Blog</h1>
+    <hr>
+    <form action="/search" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Search" name="search_profile"/>
+	</form>
+    <hr>
+    {% if user.is_authenticated %}
+    <a href="/">My Profile</a>
+    <a href="/accounts/logout/">Logout</a>
+    {% else %}
+    <a href="/accounts/login/">Login</a>
+    <a href="/register">Register</a>
+    {% endif %}
+</body>
+</html>
