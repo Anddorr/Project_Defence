@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Write comment</title>
+</head>
+<body>
+    <h1>Write your comment here:</h1>
+    <form action="/post_comment/{{ pr_id }}/{{ ct_id }}/{{ user.id }}" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Info" name="info"/>
+        <br><br>
+        <button>Post comment</button>
+	</form>
+</body>
+</html>

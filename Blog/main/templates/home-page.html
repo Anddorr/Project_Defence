@@ -13,11 +13,12 @@
 	</form>
     <hr>
     {% if user.is_authenticated %}
-    <a href="/">My Profile</a>
+    <a href="/profiles/{{ user.id }}">My Profile</a>
     <a href="/accounts/logout/">Logout</a>
     {% else %}
     <a href="/accounts/login/">Login</a>
     <a href="/register">Register</a>
     {% endif %}
+
 </body>
 </html>

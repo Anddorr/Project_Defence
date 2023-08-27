@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load tags %}
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
 </head>
 <body>
-    <h1>Profile of {{ content.0.user_id }}</h1>
+    <h1>Profile of {{ user_id }}</h1>
     <hr>
     <h2>Contents:</h2>
+    <hr>
     {% for i in content %}
     <h2>{{ i.content_name }} - {{ i.content_date }}</h2>
     <h3>{{ i.content_info }}</h3>
@@ -19,7 +21,28 @@
         {% csrf_token %}
         <h4><button>dislikes</button> - {{ i.content_dislikes }}</h4>
     </form>
+    <form action="/write_comment/{{ user_id.id }}/{{ i.id }}" method="post">
+        {% csrf_token %}
+        <h4><button>Write comment</button></h4>
+    </form>
+    <details><summary>Comments</summary>
+        <hr>
+        {% for i in comment.0 %}
+        <h4>{{ i.who_post }} - {{ i.comment_date }}</h4>
+        <h5>{{ i.comment_info }}</h5>
+        {% endfor %}
+    </details>
+    {% edit_comment comment %}
     <hr>
     {% endfor %}
+    <br>
+    {% if user.id == user_id.id %}
+    <form action="/write_article" method="post">
+        {% csrf_token %}
+        <button>Write article</button>
+    </form>
+    {% endif %}
+    <br>
+    <a href="/">Home</a>
 </body>
 </html>

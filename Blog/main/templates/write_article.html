@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Write article</title>
+</head>
+<body>
+    <h1>Write your article here:</h1>
+    <form action="/post_article/{{ user.id }}" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Name" name="name"/>
+        <br><br>
+        <input type="text" placeholder="Info" name="info">
+        <br><br>
+        <button>Post article</button>
+	</form>
+</body>
+</html>

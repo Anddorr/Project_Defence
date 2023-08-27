@@ -34,29 +34,66 @@ def search_profile(request):
 
 
 def exact_profile_html(request, pk):
-    user_content = models.Content.objects.filter(user_id=pk)
-    context = {'content': user_content}
-    return render(request, 'exact_profile.html', context)
+    if str(models.Content.objects.filter(user_id=pk)) != '<QuerySet []>':
+        comments = []
+        contents = models.Content.objects.filter(user_id=pk)
+        for i in range(len(contents)):
+            comments.append(models.Comment.objects.filter(comment_content_id=contents[i]))
+        username = User.objects.get(id=pk)
+        context = {'content': contents,
+                   'comment': comments,
+                   'user_id': username}
+        return render(request, 'exact_profile.html', context)
+    else:
+        username = User.objects.get(id=pk)
+        context = {'user_id': username}
+        return render(request, 'empty_profile.html', context)
 
 
 def add_like(request, pk):
-    if request.method == 'POST':
-            amount_like = models.Content.objects.get(id=pk)
-            amount_like.content_likes += 1
-            amount_like.save(update_fields=["content_likes"])
-            user_content = models.User.objects.get(username=amount_like.user_id)
-            return redirect(f'/profiles/{user_content.id}')
+        amount_like = models.Content.objects.get(id=pk)
+        amount_like.content_likes += 1
+        amount_like.save(update_fields=["content_likes"])
+        user_content = models.User.objects.get(username=amount_like.user_id)
+        return redirect(f'/profiles/{user_content.id}')
 
 
 def add_dislike(request, pk):
-    if request.method == 'POST':
-            amount_dislike = models.Content.objects.get(id=pk)
-            amount_dislike.content_dislikes += 1
-            amount_dislike.save(update_fields=["content_dislikes"])
-            user_content = models.User.objects.get(username=amount_dislike.user_id)
-            return redirect(f'/profiles/{user_content.id}')
+        amount_dislike = models.Content.objects.get(id=pk)
+        amount_dislike.content_dislikes += 1
+        amount_dislike.save(update_fields=["content_dislikes"])
+        user_content = models.User.objects.get(username=amount_dislike.user_id)
+        return redirect(f'/profiles/{user_content.id}')
 
 
 def write_article(request):
-    if request.method == 'post':
-        pass
+    article_bar = forms.ArticleForm()
+    context = {'form': article_bar}
+    return render(request, 'write_article.html', context)
+
+
+def post_article(request, pk):
+    us_id = models.User.objects.filter(id=pk)
+    new_article = models.Content(user_id_id=us_id.values('pk'),
+                                 content_name=request.POST.get('name'),
+                                 content_info=request.POST.get('info'))
+    new_article.save()
+    return redirect(f'/profiles/{pk}')
+
+
+def write_comment(request, pr_id, ct_id):
+    comment_bar = forms.CommentForm()
+    context = {'pr_id': pr_id, 'ct_id': ct_id, 'form': comment_bar}
+    return render(request, 'write_comment.html', context)
+
+
+def post_comment(request, pr_id, ct_id, us_id):
+    com_cont = models.Content.objects.filter(id=ct_id)
+    to_whom = User.objects.filter(id=pr_id)
+    who_post = User.objects.filter(id=us_id)
+    new_comment = models.Comment(comment_content_id=com_cont.values('pk'),
+                                 who_post_id=who_post.values('pk'),
+                                 to_whom_id=to_whom.values('pk'),
+                                 comment_info=request.POST.get('info'))
+    new_comment.save()
+    return redirect(f'/profiles/{pr_id}')

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+    <h1>Profile of {{ user_id }}</h1>
+    {% if user.id == user_id.id %}
+    <form action="/write_article" method="post">
+        {% csrf_token %}
+        <button>Write article</button>
+    </form>
+    {% endif %}
+    <br>
+    <a href="/">Home</a>
+</body>
+</html>
