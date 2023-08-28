@@ -26,8 +26,8 @@
         <h4><button>Write comment</button></h4>
     </form>
     <details><summary>Comments</summary>
-        <hr>
         {% for i in comment.0 %}
+        <hr>
         <h4>{{ i.who_post }} - {{ i.comment_date }}</h4>
         <h5>{{ i.comment_info }}</h5>
         {% endfor %}

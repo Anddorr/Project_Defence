@@ -89,6 +89,7 @@ def write_comment(request, pr_id, ct_id):
 
 def post_comment(request, pr_id, ct_id, us_id):
     com_cont = models.Content.objects.filter(id=ct_id)
+    print(com_cont.values('pk'))
     to_whom = User.objects.filter(id=pr_id)
     who_post = User.objects.filter(id=us_id)
     new_comment = models.Comment(comment_content_id=com_cont.values('pk'),
